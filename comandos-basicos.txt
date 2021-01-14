@@ -1,0 +1,15 @@
+# Comando RUN-CREATE, ejecutar un Pod, tiene el nombre de nginx-server y usa la imagen de nginx
+$ kubectl run nginx-server --image=nginx
+
+# Ver la lista de Pods
+$ kubectl get pods
+
+# Logs del Pod
+$ kubectl logs -f pod
+
+# Describir un Pod
+kubectl describe pod pod
+
+# Entrar dentro del Pod(container)
+$ kubectl exec -it nginx-server bash
+
