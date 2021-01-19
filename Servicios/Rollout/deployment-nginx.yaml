@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-server
+spec:
+  selector:
+    matchLabels:
+      app: nginx-server
+  replicas: 5
+  strategy:
+    type: RollingUpdate         #se actualiza con la nueva version de manera individual a cada pod, se aplica para ciertos opciones
+    rollingUpdate:              # Valida cuando existe un cambio o actualizacion tenga un minimo  de pods funcionando
+      maxUnavailable: 1
+      maxSurge: 5
+  minReadySeconds: 3           #Minimo de segundos para crear un Pod
+  template:
+    metadata:
+      labels:
+        app: nginx-server
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80

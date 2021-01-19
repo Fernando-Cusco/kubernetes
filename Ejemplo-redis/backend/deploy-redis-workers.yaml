@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-worker
+  labels:
+    app: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis
+      role: worker
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: worker
+    spec:
+      containers:
+        - name: redis
+          image: gcr.io/google_samples/gb-redisslave:v3
+          env:
+            - name: GET_HOSTS_FROM
+              value: dns
+    

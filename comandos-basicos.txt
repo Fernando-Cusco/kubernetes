@@ -65,3 +65,6 @@ $ kubectl top pods
 # SERVICIOS
 # Crear un servicio de modo imperativo
 $ kubectl expose deployment nombre_deploy --port=numero_puerto --type=NodePort
+
+# Ver los cambios considerables dentro del Servicio o deployment
+$ kubectl rollout history deploy nombre_deploy --revision=1
