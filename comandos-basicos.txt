@@ -1,3 +1,4 @@
+# PODS
 # Comando RUN-CREATE, ejecutar un Pod, tiene el nombre de nginx-server y usa la imagen de nginx
 $ kubectl run nginx-server --image=nginx
 
@@ -13,3 +14,54 @@ kubectl describe pod pod
 # Entrar dentro del Pod(container)
 $ kubectl exec -it nginx-server bash
 
+# Ver informacion de un Pod con sus etiquetas
+$ kubectl get pods --show-labels
+
+# Agregar etiqueta a un Pod en ejecucion -- agregar de forma declarativa
+$ kubectl label pod nombre_pod responsable=fc
+
+# Cambiar el valor de la etiqueta de un Pod en ejecucion
+$ kubectl label --overwrite pod/nombre_pod nombre_etiqueta=produccion
+
+# Quitar una etiqueta de un Pod en ejecucion
+$ kubectl label pod/nombre_pod nombre_etiqueta-
+
+# DEPLOYMENTS
+
+# Crear un Deploy simple de manera imperativa
+$ kubectl create deployment nginx --image=nginx
+
+# Listar los deployment
+$ kubectl get deployment
+
+# Ver informacion de un deployment
+$ kubectl describe deployment nombre_deploy
+
+# Recuperar la configuracion de un Deploy u otro objeto(JSON O YAML)
+$ kubectl get deployment nginx-deployment -o json > deploy.yaml
+$ kubectl get deployment nginx-deployment -o json > deploy.json
+
+# RECURSOS DEL CLUSTER
+# Ver informacion del Nodo y recursos
+$ kubectl top node
+$ kubectl describe node minikube
+
+# Escalar un deployment (Escalado horizontal), depende de la capacidad del Nodo (estado = pending,   Warning  FailedScheduling  8s (x5 over 3m16s)  default-scheduler  0/1 nodes are available: 1 Insufficient cpu.)
+$ kubectl scale deployment nombre_deploy --replicas=8
+
+# Instalar Metricas
+# Clonar -> https://github.com/kubernetes-sigs/metrics-server o instalar con:
+$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# Verificar si se instalo
+$ kubectl get apiservices | grep metrics
+
+# Depende el Cluster se debe habilitar el Metrics Server para minikube se usa
+$ minikube addons enable metrics-server
+
+# Verificar con el comando top, ver las metricas
+$ kubectl top pods
+
+# SERVICIOS
+# Crear un servicio de modo imperativo
+$ kubectl expose deployment nombre_deploy --port=numero_puerto --type=NodePort
