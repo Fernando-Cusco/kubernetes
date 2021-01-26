@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  labels:
+    app: mysql
+    estado: desarrollo
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+      estado: desarrollo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+        estado: desarrollo
+    spec:
+      containers:
+        - name: mysql
+          image: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: admin
+          # resources:
+          #     limits:
+          #       memory: "128Mi"
+          #       cpu: "500m"
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqldb
+  labels:
+    estado: desarrollo
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+  selector:
+    app: mysql
+    estado: desarrollo      
